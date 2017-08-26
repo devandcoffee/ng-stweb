@@ -4,12 +4,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ClarityModule } from 'clarity-angular';
 
-import { LoginComponent } from './login.component';
+import { TournamentsComponent } from './tournaments.component';
+
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ReactiveFormsModule],
-  declarations: [LoginComponent],
-  exports: [LoginComponent]
+  declarations: [TournamentsComponent],
+  exports: [TournamentsComponent]
 })
-export class LoginModule {
+export class TournamentsModule {
 }
