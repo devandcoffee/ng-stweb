@@ -24,6 +24,10 @@ export class TournamentsService {
 
   getTournament(id: number): Observable<ITournament> {
     const url = `${this.baseUrl}/${id}`;
+    const accessToken = localStorage.getItem('accessToken');
+    const headers = new Headers({ 'Authorization': accessToken });
+    const options = new RequestOptions({ headers: headers });
+
     if (id === 0) {
       return Observable.create((observer: any) => {
         observer.next(this.initializeProduct());
@@ -31,13 +35,17 @@ export class TournamentsService {
       });
     } else {
       return this.http
-        .get(url)
+        .get(url, options)
         .map(response => response.json());
     }
   }
 
   deleteProduct(id: number): Observable<Response> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const accessToken = localStorage.getItem('accessToken');
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': accessToken
+    });
     const options = new RequestOptions({ headers: headers });
 
     const url = `${this.baseUrl}/${id}`;
@@ -46,7 +54,11 @@ export class TournamentsService {
   }
 
   saveTournament(tournament: ITournament): Observable<ITournament> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const accessToken = localStorage.getItem('accessToken');
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': accessToken
+    });
     const options = new RequestOptions({ headers: headers });
 
     if (tournament.id === 0) {
