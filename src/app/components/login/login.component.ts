@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
   }
 
   private processUserInfo(userInfo: IUserInfo): void {
-    console.log("USER", userInfo);
     localStorage.setItem('accessToken', userInfo.id);
     localStorage.setItem('userId', userInfo.userId);
     this.router.navigate(['/tournaments']);

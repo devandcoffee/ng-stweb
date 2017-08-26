@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+
+import { environment } from '../../environments/environment';
 import { ICredentials } from '../models/user';
+
 
 @Injectable()
 export class UsersService {
 
-  private baseUrl = `/api/users`;
+  private baseUrl = `${environment.apiUrl}/api/users`;
 
   constructor(private http: Http) { }
 

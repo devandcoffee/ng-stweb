@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
+import { environment } from '../../environments/environment';
+
 import { ITournament } from '../models/tournament';
 
 import 'rxjs/add/operator/map';
@@ -9,7 +11,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class TournamentsService {
 
-  private baseUrl = `/api/tournaments`;
+  private baseUrl = `${environment.apiUrl}/api/tournaments`;
 
   constructor(private http: Http) { }
 
