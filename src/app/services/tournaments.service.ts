@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from "@angular/http";
-import { Observable } from "rxjs/Observable";
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
-import { ITournament } from "../models/tournament";
+import { ITournament } from '../models/tournament';
 
 import 'rxjs/add/operator/map';
 
@@ -18,7 +18,7 @@ export class TournamentsService {
   getTournaments(): Observable<ITournament[]> {
     return this.http
       .get(this.baseUrl)
-      .map(response => response.json())
+      .map(response => response.json());
   }
 
   getTournament(id: number): Observable<ITournament> {
@@ -31,22 +31,22 @@ export class TournamentsService {
     } else {
       return this.http
         .get(url)
-        .map(response => response.json())
+        .map(response => response.json());
     }
   }
 
   deleteProduct(id: number): Observable<Response> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers });
 
     const url = `${this.baseUrl}/${id}`;
     return this.http.delete(url, options)
-      .map(response => response.json())
+      .map(response => response.json());
   }
 
   saveTournament(tournament: ITournament): Observable<ITournament> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers });
 
     if (tournament.id === 0) {
       return this.createTournament(tournament, options);
@@ -58,14 +58,14 @@ export class TournamentsService {
     tournament.id = undefined;
     return this.http
       .post(this.baseUrl, tournament, options)
-      .map(response => response.json())
+      .map(response => response.json());
   }
 
   private updateTournament(tournament: ITournament, options: RequestOptions): Observable<ITournament> {
     const url = `${this.baseUrl}/${tournament.id}`;
     return this.http
       .put(url, tournament, options)
-      .map(response => response.json())
+      .map(response => response.json());
   }
 
   initializeProduct(): ITournament {
@@ -76,6 +76,6 @@ export class TournamentsService {
       start_date: null,
       amount_teams: 1,
       tournamentTypeId: 0,
-    }
+    };
   }
 }

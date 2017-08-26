@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { TournamentsService } from "../../services/tournaments.service";
-import { ITournament } from "../../models/tournament";
+import { TournamentsService } from '../../services/tournaments.service';
+import { ITournament } from '../../models/tournament';
 
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl } from '@angular/forms';
 
-import { getDateFromString } from "../../utils/getDate";
+import { getDateFromString } from '../../utils/getDate';
 
 
 @Component({
@@ -18,9 +18,11 @@ export class TournamentsComponent implements OnInit {
   tournaments: Array<ITournament> = [];
   tournament: ITournament = {} as ITournament;
 
-  openedForm: boolean = false;
+  openedForm = false;
 
-  pageTitle: string = '';
+  pageTitle = '';
+
+  loading = false;
 
   constructor(private tournamentsService: TournamentsService) {
   }
@@ -33,13 +35,15 @@ export class TournamentsComponent implements OnInit {
       start_date: new FormControl(),
       amount_teams: new FormControl(),
       tournamentTypeId: new FormControl(),
-    })
+    });
   }
 
   refresh() {
+    this.loading = true;
     this.tournamentsService.getTournaments().subscribe((tournaments: Array<ITournament>) => {
       this.tournaments = tournaments;
-    })
+      this.loading = false;
+    });
   }
 
   getProduct(id: number = 0): void {
@@ -76,7 +80,7 @@ export class TournamentsComponent implements OnInit {
     this.openedForm = false;
     if (this.tournamentForm.dirty && this.tournamentForm.valid) {
       // Copy the form values over the product object values
-      let tournament = Object.assign({}, this.tournament, this.tournamentForm.value);
+      const tournament = Object.assign({}, this.tournament, this.tournamentForm.value);
 
       this.tournamentsService.saveTournament(tournament)
         .subscribe(() => this.onSaveComplete());
@@ -84,12 +88,12 @@ export class TournamentsComponent implements OnInit {
   }
 
   delete(id: number): void {
-    this.tournamentsService.deleteProduct(id).subscribe(() => this.onSaveComplete())
+    this.tournamentsService.deleteProduct(id).subscribe(() => this.onSaveComplete());
   }
 
   onSaveComplete(): void {
     // Reset the form to clear the flags
     this.tournamentForm.reset();
-    this.refresh()
+    this.refresh();
   }
 }
