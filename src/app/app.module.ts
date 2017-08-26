@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { ROUTING } from './app.routing';
 
 import { TournamentsService } from './services/tournaments.service';
+import { UsersService } from './services/users.service';
+
 import { ComponentsModule } from './components/components.module';
 
 @NgModule({
@@ -19,7 +21,7 @@ import { ComponentsModule } from './components/components.module';
     ROUTING,
     ComponentsModule
   ],
-  providers: [TournamentsService],
+  providers: [TournamentsService, UsersService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

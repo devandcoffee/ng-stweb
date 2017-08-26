@@ -6,12 +6,10 @@ import { ITournament } from '../models/tournament';
 
 import 'rxjs/add/operator/map';
 
-const rootUrl = 'https://server-oogiotwuzt.now.sh';
-
 @Injectable()
 export class TournamentsService {
 
-  private baseUrl = `${rootUrl}/api/tournaments`;
+  private baseUrl = `/api/tournaments`;
 
   constructor(private http: Http) { }
 

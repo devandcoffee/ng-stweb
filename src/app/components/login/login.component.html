@@ -1,0 +1,20 @@
+<div class="clr-example">
+  <div class="login-wrapper">
+    <form class="login" [formGroup]="loginForm" novalidate (ngSubmit)="login()">
+      <label class="title">
+        <h3 class="welcome">Welcome to</h3>
+        WASTP
+        <h5 class="hint">Use your Email to sign in or create one now</h5>
+      </label>
+      <div class="login-group">
+        <input class="username" type="email" id="email" placeholder="Username" formControlName="email" (focus)="removeError()">
+        <input class="password" type="password" id="password" placeholder="Password" formControlName="password" (focus)="removeError()">
+        <div class="error active" *ngIf="badCredentials">
+          Invalid user name or password
+        </div>
+        <button type="submit" class="btn btn-primary">LOGIN</button>
+        <a href="javascript://" class="signup">Sign up for a Wastp ID</a>
+      </div>
+    </form>
+  </div>
+</div>
