@@ -14,8 +14,11 @@ export class TournamentsService {
   constructor(private http: Http) { }
 
   getTournaments(): Observable<ITournament[]> {
+    const accessToken = localStorage.getItem('accessToken');
+    const headers = new Headers({ 'Authorization': accessToken });
+    const options = new RequestOptions({ headers: headers });
     return this.http
-      .get(this.baseUrl)
+      .get(this.baseUrl, options)
       .map(response => response.json());
   }
 

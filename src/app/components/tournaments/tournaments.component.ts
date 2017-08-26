@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TournamentsService } from '../../services/tournaments.service';
 import { ITournament } from '../../models/tournament';
 
@@ -24,7 +25,7 @@ export class TournamentsComponent implements OnInit {
 
   loading = false;
 
-  constructor(private tournamentsService: TournamentsService) {
+  constructor(private router: Router, private tournamentsService: TournamentsService) {
   }
 
   ngOnInit(): void {
@@ -40,10 +41,13 @@ export class TournamentsComponent implements OnInit {
 
   refresh() {
     this.loading = true;
-    this.tournamentsService.getTournaments().subscribe((tournaments: Array<ITournament>) => {
-      this.tournaments = tournaments;
-      this.loading = false;
-    });
+    this.tournamentsService.getTournaments().subscribe(
+      (tournaments: Array<ITournament>) => {
+        this.tournaments = tournaments;
+        this.loading = false;
+      },
+      error => this.processError(error)
+    );
   }
 
   getProduct(id: number = 0): void {
@@ -95,5 +99,11 @@ export class TournamentsComponent implements OnInit {
     // Reset the form to clear the flags
     this.tournamentForm.reset();
     this.refresh();
+  }
+
+  private processError(error) {
+    if (error.status === 401) {
+      this.router.navigate(['/']);
+    }
   }
 }

@@ -5,10 +5,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from 'clarity-angular';
 
 import { LoginComponent } from './login.component';
-import { ROUTING } from './login.component.routing';
 
 @NgModule({
-  imports: [CommonModule, ClarityModule, ReactiveFormsModule, ROUTING],
+  imports: [CommonModule, ClarityModule, ReactiveFormsModule],
   declarations: [LoginComponent],
   exports: [LoginComponent]
 })

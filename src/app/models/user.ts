@@ -1,5 +1,5 @@
 export interface IUserInfo {
-  accessToken: string;
+  id: string; // access token
   userId: string;
 }
 
