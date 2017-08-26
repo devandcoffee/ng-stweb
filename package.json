@@ -21,7 +21,14 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "@webcomponents/custom-elements": "^1.0.0-alpha.3",
+    "clarity-angular": "^0.10.2",
+    "clarity-icons": "^0.10.2",
+    "clarity-ui": "^0.10.2",
     "core-js": "^2.4.1",
+    "install": "^0.10.1",
+    "mutationobserver-shim": "^0.3.2",
+    "npm": "^5.3.0",
     "rxjs": "^5.4.2",
     "zone.js": "^0.8.14"
   },
@@ -42,6 +49,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
+    "serve": "^6.0.6",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
     "typescript": "~2.3.3"

@@ -23,6 +23,19 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 Before running the tests make sure you are serving the app via `ng serve`.
 
+## Deploying with now.sh
+
+Run `ng build --prod` to get the `dist/` folder.
+
+Change `package.json` scripts to:
+
+```
+"start": "serve dist/ --single",
+"build": "ng build --prod",
+```
+
+Deploy with `now.sh`
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

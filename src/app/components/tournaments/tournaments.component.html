@@ -1,0 +1,61 @@
+<p>
+  <button class="btn btn-primary" (click)="getProduct()">New Tournament</button>
+</p>
+
+<clr-modal [(clrModalOpen)]="openedForm">
+  <h3 class="modal-title">{{pageTitle}}</h3>
+  <div class="modal-body">
+    <form [formGroup]="tournamentForm" novalidate (ngSubmit)="saveTournament()">
+      <section class="form-block">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" formControlName="name">
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" rows="5" formControlName="description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="tournamentTypeId">Select tournament Type</label>
+          <div class="select">
+            <select id="tournamentTypeId" formControlName="tournamentTypeId">
+                    <option value="0">League</option>
+                    <option value="1">Cup</option>
+                </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="start_date">Start Date</label>
+          <input type="date" id="start_date" formControlName="start_date">
+        </div>
+        <div class="form-group">
+          <label for="amount_teams">Amount of Teams</label>
+          <input type="number" id="amount_teams" formControlName="amount_teams">
+        </div>
+      </section>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="openedForm = false">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]='!tournamentForm.valid'>Save</button>
+      </div>
+    </form>
+  </div>
+</clr-modal>
+
+
+<clr-datagrid>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Description</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let tournament of tournaments" [clrDgItem]="tournament">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="getProduct(tournament.id)">Edit</button>
+      <button class="action-item" (click)="delete(tournament.id)">Delete</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{tournament.name}}</clr-dg-cell>
+    <clr-dg-cell>{{tournament.description}}</clr-dg-cell>
+  </clr-dg-row>
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{tournaments.length}} posts
+    <clr-dg-pagination #pagination [clrDgTotalItems]="tournaments.length" [clrDgPageSize]="10"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
