@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TournamentsService } from '../../services/tournaments.service';
+import { TournamentTypesService } from '../../services/tournament-types.service';
+
 import { ITournament } from '../../models/tournament';
+import { ITournamentType } from '../../models/tournamentType';
 
 import { FormGroup, FormControl } from '@angular/forms';
 
@@ -17,6 +20,8 @@ export class TournamentsComponent implements OnInit {
 
   tournamentForm: FormGroup;
   tournaments: Array<ITournament> = [];
+  tournamentTypes: Array<ITournamentType> = [];
+
   tournament: ITournament = {} as ITournament;
 
   openedForm = false;
@@ -25,11 +30,17 @@ export class TournamentsComponent implements OnInit {
 
   loading = false;
 
-  constructor(private router: Router, private tournamentsService: TournamentsService) {
+  constructor(
+    private router: Router,
+    private tournamentsService: TournamentsService,
+    private tournamentTypesService: TournamentTypesService
+  ) {
   }
 
   ngOnInit(): void {
     this.refresh();
+    this.tournamentTypesService.getTournamentTypes().
+      subscribe((tournamentTypes: Array<ITournamentType>) => this.tournamentTypes = tournamentTypes);
     this.tournamentForm = new FormGroup({
       name: new FormControl(),
       description: new FormControl(),

@@ -19,9 +19,8 @@
           <label for="tournamentTypeId">Select tournament Type</label>
           <div class="select">
             <select id="tournamentTypeId" formControlName="tournamentTypeId">
-                    <option value="0">League</option>
-                    <option value="1">Cup</option>
-                </select>
+              <option *ngFor="let tournamentType of tournamentTypes" [value]="tournamentType.id">{{tournamentType.name}}</option>
+            </select>
           </div>
         </div>
         <div class="form-group">

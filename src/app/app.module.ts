@@ -7,6 +7,7 @@ import { ROUTING } from './app.routing';
 
 import { TournamentsService } from './services/tournaments.service';
 import { UsersService } from './services/users.service';
+import { TournamentTypesService } from './services/tournament-types.service';
 
 import { ComponentsModule } from './components/components.module';
 
@@ -21,7 +22,7 @@ import { ComponentsModule } from './components/components.module';
     ROUTING,
     ComponentsModule
   ],
-  providers: [TournamentsService, UsersService],
+  providers: [TournamentsService, UsersService, TournamentTypesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
