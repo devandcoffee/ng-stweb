@@ -94,7 +94,6 @@ export class TournamentsComponent implements OnInit {
   saveTournament() {
     this.openedForm = false;
     if (this.tournamentForm.dirty && this.tournamentForm.valid) {
-      // Copy the form values over the product object values
       const tournament = Object.assign({}, this.tournament, this.tournamentForm.value);
 
       this.tournamentsService.saveTournament(tournament)
@@ -103,7 +102,7 @@ export class TournamentsComponent implements OnInit {
   }
 
   delete(id: number): void {
-    this.tournamentsService.deleteProduct(id).subscribe(() => this.onSaveComplete());
+    this.tournamentsService.deleteTournament(id).subscribe(() => this.onSaveComplete());
   }
 
   onSaveComplete(): void {
