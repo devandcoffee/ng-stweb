@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TournamentsComponent } from './tournaments/tournaments.component';
 import { LoginModule } from './login/login.module';
 import { TournamentsModule } from './tournaments/tournaments.module';
+import { TeamsModule } from './teams/teams.module';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { TournamentsModule } from './tournaments/tournaments.module';
     ClarityModule,
     ReactiveFormsModule,
     LoginModule,
+    TeamsModule,
     TournamentsModule
   ],
   declarations: [],

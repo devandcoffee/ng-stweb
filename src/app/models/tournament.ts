@@ -3,6 +3,6 @@ export interface ITournament {
   description: string;
   start_date: string;
   amount_teams: Number;
-  id: Number;
+  id: string;
   tournamentTypeId: Number;
 }

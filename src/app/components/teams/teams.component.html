@@ -1,0 +1,48 @@
+<p>
+  <button class="btn btn-primary" (click)="getTeam()">New Team</button>
+</p>
+
+<clr-modal [(clrModalOpen)]="openedForm">
+  <h3 class="modal-title">{{pageTitle}}</h3>
+  <div class="modal-body">
+    <form [formGroup]="teamForm" novalidate (ngSubmit)="saveTeam()">
+      <section class="form-block">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" formControlName="name">
+        </div>
+        <div class="form-group">
+          <label for="statusId">Select Status</label>
+          <div class="select">
+            <select id="statusId" formControlName="statusId">
+              <option *ngFor="let status of statuses" [value]="status.id">{{status.name}}</option>
+            </select>
+          </div>
+        </div>
+      </section>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="openedForm = false">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]='!teamForm.valid'>Save</button>
+      </div>
+    </form>
+  </div>
+</clr-modal>
+
+
+<clr-datagrid [clrDgLoading]="loading">
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Description</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let team of teams" [clrDgItem]="team">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="getTeam(team.id)">Edit</button>
+      <button class="action-item" (click)="delete(team.id)">Delete</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{team.name}}</clr-dg-cell>
+    <clr-dg-cell>{{team.description}}</clr-dg-cell>
+  </clr-dg-row>
+  <clr-dg-footer>
+    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{teams.length}} Teams
+    <clr-dg-pagination #pagination [clrDgTotalItems]="teams.length" [clrDgPageSize]="10"></clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
