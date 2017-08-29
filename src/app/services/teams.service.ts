@@ -9,22 +9,23 @@ import { ITeam } from '../models/teams';
 @Injectable()
 export class TeamsService {
 
-  private filter = encodeURI('{\"include\"\:\"status\"}');
-  private baseUrl = `${environment.apiUrl}/api/teams?filter=${this.filter}`;
+  private baseUrl = `${environment.apiUrl}/api/teams`;
 
   constructor(private http: Http) { }
 
   getTeams(): Observable<ITeam[]> {
+    const filter = encodeURI('{\"include\"\:\"status\"}');
+    const url = `${this.baseUrl}?filter=${filter}`;
     const accessToken = localStorage.getItem('accessToken');
     const headers = new Headers({ 'Authorization': accessToken });
     const options = new RequestOptions({ headers: headers });
     return this.http
-      .get(this.baseUrl, options)
+      .get(url, options)
       .map(response => response.json());
   }
 
   getTeam(id: number): Observable<ITeam> {
-    const url = `${this.baseUrl} / ${id} `;
+    const url = `${this.baseUrl}/${id} `;
     const accessToken = localStorage.getItem('accessToken');
     const headers = new Headers({ 'Authorization': accessToken });
     const options = new RequestOptions({ headers: headers });
@@ -49,7 +50,7 @@ export class TeamsService {
     });
     const options = new RequestOptions({ headers: headers });
 
-    const url = `${this.baseUrl} /${id}`;
+    const url = `${this.baseUrl}/${id}`;
     return this.http.delete(url, options)
       .map(response => response.json());
   }
