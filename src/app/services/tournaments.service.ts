@@ -63,7 +63,7 @@ export class TournamentsService {
     });
     const options = new RequestOptions({ headers: headers });
 
-    if (tournament.id === 0) {
+    if (tournament.id === '') {
       return this.createTournament(tournament, options);
     }
     return this.updateTournament(tournament, options);
@@ -85,7 +85,7 @@ export class TournamentsService {
 
   initializeTournament(): ITournament {
     return {
-      id: 0,
+      id: '',
       name: '',
       description: '',
       start_date: null,

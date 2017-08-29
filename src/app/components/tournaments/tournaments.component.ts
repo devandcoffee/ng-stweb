@@ -75,7 +75,7 @@ export class TournamentsComponent implements OnInit {
     }
     this.tournament = tournament;
 
-    if (this.tournament.id === 0) {
+    if (this.tournament.id === '') {
       this.pageTitle = 'Add Tournament';
     } else {
       this.pageTitle = `Edit Tournament: ${this.tournament.name}`;
