@@ -1,5 +1,5 @@
 <p>
-  <button class="btn btn-primary" (click)="getProduct()">New Tournament</button>
+  <button class="btn btn-primary" (click)="getTournament()">New Tournament</button>
 </p>
 
 <clr-modal [(clrModalOpen)]="openedForm">
@@ -47,7 +47,7 @@
 
   <clr-dg-row *clrDgItems="let tournament of tournaments" [clrDgItem]="tournament">
     <clr-dg-action-overflow>
-      <button class="action-item" (click)="getProduct(tournament.id)">Edit</button>
+      <button class="action-item" (click)="getTournament(tournament.id)">Edit</button>
       <button class="action-item" (click)="delete(tournament.id)">Delete</button>
     </clr-dg-action-overflow>
     <clr-dg-cell>{{tournament.name}}</clr-dg-cell>

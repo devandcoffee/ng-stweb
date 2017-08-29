@@ -61,7 +61,7 @@ export class TournamentsComponent implements OnInit {
     );
   }
 
-  getProduct(id: number = 0): void {
+  getTournament(id: number = 0): void {
     this.tournamentsService.getTournament(id)
       .subscribe(
       (tournament: ITournament) => this.onTournamentRetrieved(tournament),

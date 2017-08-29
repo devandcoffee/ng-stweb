@@ -32,7 +32,7 @@ export class TournamentsService {
 
     if (id === 0) {
       return Observable.create((observer: any) => {
-        observer.next(this.initializeProduct());
+        observer.next(this.initializeTournament());
         observer.complete();
       });
     } else {
@@ -42,7 +42,7 @@ export class TournamentsService {
     }
   }
 
-  deleteProduct(id: number): Observable<Response> {
+  deleteTournament(id: number): Observable<Response> {
     const accessToken = localStorage.getItem('accessToken');
     const headers = new Headers({
       'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export class TournamentsService {
       .map(response => response.json());
   }
 
-  initializeProduct(): ITournament {
+  initializeTournament(): ITournament {
     return {
       id: 0,
       name: '',
