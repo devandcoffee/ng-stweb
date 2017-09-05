@@ -1,9 +1,10 @@
-export interface IUserInfo {
-  id: string; // access token
-  userId: string;
-}
+import { ITourney } from './tourney';
 
-export interface ICredentials {
-  email: string;
-  password: string;
+export interface IUserInfo {
+  id?: Number;
+  firstname: String;
+  lastname: String;
+  email: String;
+  avatar: String;
+  tourneys?: Array<ITourney>;
 }

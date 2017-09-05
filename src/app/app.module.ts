@@ -7,11 +7,15 @@ import { ROUTING } from './app.routing';
 
 import { ComponentsModule } from './components/components.module';
 
-import { TournamentsService } from './services/tournaments.service';
-import { UsersService } from './services/users.service';
-import { TournamentTypesService } from './services/tournament-types.service';
-import { TeamsService } from './services/teams.service';
-import { StatusesService } from './services/statuses.service';
+
+import { ApolloClient } from 'apollo-client';
+import { ApolloModule } from 'apollo-angular';
+
+const client = new ApolloClient();
+
+export function provideClient(): ApolloClient {
+  return client;
+}
 
 @NgModule({
   declarations: [
@@ -22,9 +26,10 @@ import { StatusesService } from './services/statuses.service';
     BrowserModule,
     HttpModule,
     ROUTING,
-    ComponentsModule
+    ComponentsModule,
+    ApolloModule.forRoot(provideClient)
   ],
-  providers: [TournamentsService, UsersService, TournamentTypesService, TeamsService, StatusesService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

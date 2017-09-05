@@ -1,15 +1,106 @@
 import { Component, OnInit } from '@angular/core';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 import { Router } from '@angular/router';
-import { TournamentsService } from '../../services/tournaments.service';
-import { TournamentTypesService } from '../../services/tournament-types.service';
-
-import { ITournament } from '../../models/tournament';
-import { ITournamentType } from '../../models/tournamentType';
 
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { getDateFromString } from '../../utils/getDate';
 
+import { ITourney } from '../../models/tourney';
+import { ITourneyType } from '../../models/tourneyType';
+import { IUserInfo } from '../../models/user';
+
+const CurrentTournaments = gql`
+  query CurrentTournaments{
+    tourneys {
+      id
+      name
+      description
+      start_date
+      amount_teams
+      tourney_type {
+        id
+        name
+      }
+    }
+  }
+`;
+
+const CurrentTournament = gql`
+  query CurrentTournament($id: Int!) {
+    tourney(id: $id) {
+      id
+      name
+      amount_teams
+      start_date
+      amount_teams
+      description
+      user {
+        id
+      }
+      tourney_type {
+        id
+        name
+      }
+    }
+  }
+`;
+
+const CreateTournament = gql`
+  mutation CreateTournament($tourney: NewTourney) {
+    createTourney(tourney: $tourney) {
+      id
+      name
+    }
+  }
+`;
+
+const UpdateTournament = gql`
+  mutation UpdateTournament($id: Int!, $tourney: EditTourney) {
+    updateTourney(id: $id, tourney: $tourney) {
+      id
+      name
+    }
+  }
+`;
+
+const CurrentTournamentTypes = gql`
+  query CurrentTourneysTypes {
+    tourneysTypes {
+      id
+      name
+    }
+  }
+`;
+
+const DeleteTournament = gql`
+  mutation DeleteTournament($id: Int!) {
+    deleteTourney(id: $id) {
+      id
+      name
+      amount_teams
+      start_date
+      amount_teams
+      description
+      user {
+        id
+      }
+      tourney_type {
+        id
+        name
+      }
+    }
+  }
+`;
+
+const USER_DATA = {
+  'id': 1,
+  'lastname': 'Upton',
+  'firstname': 'Isom',
+  'email': 'Nayeli.Abbott@Swift.org',
+  'avatar': 'http://www.gravatar.com/avatar/?s=200'
+};
 
 @Component({
   selector: 'app-tournaments',
@@ -18,11 +109,12 @@ import { getDateFromString } from '../../utils/getDate';
 })
 export class TournamentsComponent implements OnInit {
 
+  tourneysStream$: any;
   tournamentForm: FormGroup;
-  tournaments: Array<ITournament> = [];
-  tournamentTypes: Array<ITournamentType> = [];
+  tourneys: Array<ITourney> = [];
+  tourneysTypes: Array<ITourneyType> = [];
 
-  tournament: ITournament = {} as ITournament;
+  tourney: ITourney = {} as ITourney;
 
   openedForm = false;
 
@@ -31,89 +123,142 @@ export class TournamentsComponent implements OnInit {
   loading = false;
 
   constructor(
+    private apollo: Apollo,
     private router: Router,
-    private tournamentsService: TournamentsService,
-    private tournamentTypesService: TournamentTypesService
   ) {
   }
 
   ngOnInit(): void {
-    this.refresh();
-    this.tournamentTypesService.getTournamentTypes().
-      subscribe((tournamentTypes: Array<ITournamentType>) => this.tournamentTypes = tournamentTypes);
+    this.tourneysStream$ = this.apollo.watchQuery<any>({
+      query: CurrentTournaments
+    });
+
+    this.tourneysStream$.subscribe(({ data }) => {
+      this.tourneys = data.tourneys;
+    });
+
+    this.apollo.watchQuery<any>({
+      query: CurrentTournamentTypes
+    }).subscribe(({ data }) => {
+      this.tourneysTypes = data.tourneysTypes;
+    });
+
     this.tournamentForm = new FormGroup({
       name: new FormControl(),
       description: new FormControl(),
       start_date: new FormControl(),
       amount_teams: new FormControl(),
-      tournamentTypeId: new FormControl(),
+      tourney_type: new FormControl(),
     });
   }
 
   refresh() {
     this.loading = true;
-    this.tournamentsService.getTournaments().subscribe(
-      (tournaments: Array<ITournament>) => {
-        this.tournaments = tournaments;
-        this.loading = false;
-      },
-      error => this.processError(error)
-    );
   }
 
-  getTournament(id: number = 0): void {
-    this.tournamentsService.getTournament(id)
-      .subscribe(
-      (tournament: ITournament) => this.onTournamentRetrieved(tournament),
-    );
+  getTourney(id: number = 0): void {
+    if (id) {
+      this.apollo.watchQuery<any>({
+        query: CurrentTournament,
+        variables: {
+          id
+        }
+      }).subscribe(({ data }) => {
+        this.onTourneyRetrieved(data.tourney);
+      });
+    } else {
+      const tourney = {
+        name: '',
+        description: '',
+        start_date: '',
+        amount_teams: 0,
+        user: USER_DATA,
+        tourney_type: {} as ITourneyType,
+      };
+      this.onTourneyRetrieved(tourney);
+    }
   }
 
-  onTournamentRetrieved(tournament: ITournament): void {
+  onTourneyRetrieved(tourney: ITourney): void {
     this.openedForm = true;
     if (this.tournamentForm) {
       this.tournamentForm.reset();
     }
-    this.tournament = tournament;
+    this.tourney = tourney;
 
-    if (this.tournament.id === '') {
+    if (!this.tourney) {
       this.pageTitle = 'Add Tournament';
     } else {
-      this.pageTitle = `Edit Tournament: ${this.tournament.name}`;
+      this.pageTitle = `Edit Tournament: ${this.tourney.name}`;
+      const tourney_type = this.tourneysTypes.find(x => x.id === this.tourney.tourney_type.id);
+      this.tournamentForm.patchValue({
+        name: this.tourney.name,
+        description: this.tourney.description,
+        start_date: getDateFromString(this.tourney.start_date),
+        amount_teams: this.tourney.amount_teams,
+        tourney_type: tourney_type
+      });
     }
-
-    // Update the data on the form
-    this.tournamentForm.patchValue({
-      name: this.tournament.name,
-      description: this.tournament.description,
-      start_date: getDateFromString(this.tournament.start_date),
-      amount_teams: this.tournament.amount_teams,
-      tournamentTypeId: this.tournament.tournamentTypeId
-    });
   }
 
   saveTournament() {
     this.openedForm = false;
     if (this.tournamentForm.dirty && this.tournamentForm.valid) {
-      const tournament = Object.assign({}, this.tournament, this.tournamentForm.value);
-
-      this.tournamentsService.saveTournament(tournament)
-        .subscribe(() => this.onSaveComplete());
+      const tourney: ITourney = Object.assign({}, this.tourney, this.tournamentForm.value);
+      if (!tourney.id) {
+        this.apollo.mutate({
+          mutation: CreateTournament,
+          variables: {
+            'tourney': {
+              name: tourney.name,
+              description: tourney.description,
+              amount_teams: tourney.amount_teams,
+              user_id: +tourney.user.id,
+              tourney_type_id: +tourney.tourney_type.id
+            }
+          }
+        }).subscribe(x => {
+          this.onOperationComplete()
+        }, err => {
+          console.log(err);
+        });
+      } else {
+        this.apollo.mutate({
+          mutation: UpdateTournament,
+          variables: {
+            'id': tourney.id,
+            'tourney': {
+              name: tourney.name,
+              description: tourney.description,
+              amount_teams: tourney.amount_teams,
+              start_date: tourney.start_date,
+            }
+          }
+        }).subscribe(x => {
+          this.onOperationComplete()
+        }, err => {
+          console.log(err);
+        });
+      }
     }
   }
 
-  delete(id: number): void {
-    this.tournamentsService.deleteTournament(id).subscribe(() => this.onSaveComplete());
+  deleteTourney(id: number): void {
+    this.apollo.mutate({
+      mutation: DeleteTournament,
+      variables: {
+        'id': id
+      }
+    }).subscribe(x => {
+      this.onOperationComplete();
+    }, err => {
+      console.log(err);
+    });
   }
 
-  onSaveComplete(): void {
+  onOperationComplete(): void {
     // Reset the form to clear the flags
     this.tournamentForm.reset();
-    this.refresh();
-  }
-
-  private processError(error) {
-    if (error.status === 401) {
-      this.router.navigate(['/']);
-    }
+    this.tourneysStream$.refetch();
   }
 }

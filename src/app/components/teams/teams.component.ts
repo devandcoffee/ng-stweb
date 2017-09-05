@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TeamsService } from '../../services/teams.service';
-import { StatusesService } from '../../services/statuses.service';
 
 import { ITeam } from '../../models/teams';
 import { IStatus } from '../../models/status';
@@ -31,37 +29,36 @@ export class TeamsComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private teamsService: TeamsService,
-    private statusesService: StatusesService
+
   ) {
   }
 
   ngOnInit(): void {
     this.refresh();
-    this.statusesService.getStatuses().
-      subscribe((statuses: Array<IStatus>) => this.statuses = statuses);
-    this.teamForm = new FormGroup({
-      name: new FormControl(),
-      statusId: new FormControl(),
-    });
+    // this.statusesService.getStatuses().
+    //   subscribe((statuses: Array<IStatus>) => this.statuses = statuses);
+    // this.teamForm = new FormGroup({
+    //   name: new FormControl(),
+    //   statusId: new FormControl(),
+    // });
   }
 
   refresh() {
     this.loading = true;
-    this.teamsService.getTeams().subscribe(
-      (teams: Array<ITeam>) => {
-        this.teams = teams;
-        this.loading = false;
-      },
-      error => this.processError(error)
-    );
+    // this.teamsService.getTeams().subscribe(
+    //   (teams: Array<ITeam>) => {
+    //     this.teams = teams;
+    //     this.loading = false;
+    //   },
+    //   error => this.processError(error)
+    // );
   }
 
   getTeam(id: number = 0): void {
-    this.teamsService.getTeam(id)
-      .subscribe(
-      (team: ITeam) => this.onTeamRetrieved(team),
-    );
+    // this.teamsService.getTeam(id)
+    //   .subscribe(
+    //   (team: ITeam) => this.onTeamRetrieved(team),
+    // );
   }
 
   onTeamRetrieved(team: ITeam): void {
@@ -89,13 +86,13 @@ export class TeamsComponent implements OnInit {
     if (this.teamForm.dirty && this.teamForm.valid) {
       const team = Object.assign({}, this.team, this.teamForm.value);
 
-      this.teamsService.saveTeam(team)
-        .subscribe(() => this.onSaveComplete());
+      // this.teamsService.saveTeam(team)
+      //   .subscribe(() => this.onSaveComplete());
     }
   }
 
   delete(id: number): void {
-    this.teamsService.deleteTeam(id).subscribe(() => this.onSaveComplete());
+    // this.teamsService.deleteTeam(id).subscribe(() => this.onSaveComplete());
   }
 
   onSaveComplete(): void {
