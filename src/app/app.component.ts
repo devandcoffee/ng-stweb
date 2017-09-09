@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ClarityIcons } from 'clarity-icons';
 
 import { AlertService, AlertMsg } from './services/alert.service';
 
@@ -32,4 +33,3 @@ export class AppComponent implements OnInit {
     this.alertService.show(alertMsg);
   }
 }
-
