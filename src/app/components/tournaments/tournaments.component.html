@@ -8,7 +8,7 @@
     <form [formGroup]="tournamentForm" novalidate (ngSubmit)="saveTournament()">
       <section class="form-block">
         <div class="form-group">
-          <label for="name">Name</label>
+          <label for="name" class="required">Name</label>
           <input type="text" id="name" formControlName="name">
         </div>
         <div class="form-group">
@@ -16,7 +16,7 @@
           <textarea id="description" rows="5" formControlName="description"></textarea>
         </div>
         <div class="form-group">
-          <label for="tournamentTypeId">Select tournament Type</label>
+          <label for="tournamentTypeId" class="required">Select tournament Type</label>
           <div class="select">
             <select id="tourney_type" formControlName="tourney_type">
               <option *ngFor="let tourney_type of tourneysTypes" [ngValue]="tourney_type">{{tourney_type.name}}</option>
@@ -24,11 +24,11 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="start_date">Start Date</label>
+          <label for="start_date" class="required">Start Date</label>
           <input type="date" id="start_date" formControlName="start_date">
         </div>
         <div class="form-group">
-          <label for="amount_teams">Amount of Teams</label>
+          <label for="amount_teams" class="required">Amount of Teams</label>
           <input type="number" id="amount_teams" formControlName="amount_teams">
         </div>
       </section>

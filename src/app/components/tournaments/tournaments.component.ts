@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Router } from '@angular/router';
 
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { getDateFromString } from '../../utils/getDate';
 
@@ -12,6 +12,7 @@ import { ITourneyType } from '../../models/tourneyType';
 import { IUserInfo } from '../../models/user';
 import { AlertService, AlertMsg } from '../../services/alert.service';
 import { CREATED, ERROR, UPDATED, DELETED } from './messages';
+import { validDate } from '../../shared/validators';
 
 const CurrentTournaments = gql`
   query CurrentTournaments{
@@ -147,11 +148,11 @@ export class TournamentsComponent implements OnInit {
     });
 
     this.tournamentForm = new FormGroup({
-      name: new FormControl(),
+      name: new FormControl(null, Validators.required),
       description: new FormControl(),
-      start_date: new FormControl(),
-      amount_teams: new FormControl(),
-      tourney_type: new FormControl(),
+      start_date: new FormControl(null, [Validators.required, validDate]),
+      amount_teams: new FormControl(null, [Validators.required, Validators.min(1)]),
+      tourney_type: new FormControl(null, [Validators.required]),
     });
   }
 
