@@ -12,7 +12,7 @@ import { ITourneyType } from '../../models/tourneyType';
 import { IUserInfo } from '../../models/user';
 import { AlertService, AlertMsg } from '../../services/alert.service';
 import { CREATED, ERROR, UPDATED, DELETED } from './messages';
-import { validDate } from '../../shared/validators';
+import { validDate } from '../../shared/formValidators';
 
 const CurrentTournaments = gql`
   query CurrentTournaments{
