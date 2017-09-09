@@ -11,6 +11,9 @@ import { ComponentsModule } from './components/components.module';
 import { ApolloClient } from 'apollo-client';
 import { ApolloModule } from 'apollo-angular';
 
+import { AlertService } from './services/alert.service';
+import { AlertComponent } from './alert/alert.component';
+
 const client = new ApolloClient();
 
 export function provideClient(): ApolloClient {
@@ -20,6 +23,7 @@ export function provideClient(): ApolloClient {
 @NgModule({
   declarations: [
     AppComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -29,7 +33,7 @@ export function provideClient(): ApolloClient {
     ComponentsModule,
     ApolloModule.forRoot(provideClient)
   ],
-  providers: [],
+  providers: [AlertService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

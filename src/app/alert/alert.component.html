@@ -1,0 +1,18 @@
+<div *ngIf="alertMsg.show" [ngClass]="[alertMsg.type, 'alert', 'alert-app-level']">
+  <div class="alert-items">
+    <div class="alert-item static">
+      <div style="margin-right: 2px; padding-bottom: 3px">
+        <clr-icon *ngIf="alertMsg.type === 'alert-success'" shape="success-standard"></clr-icon>
+        <clr-icon *ngIf="alertMsg.type === 'alert-info'" shape="info-standard"></clr-icon>
+        <clr-icon *ngIf="alertMsg.type === 'alert-error'" shape="error-standard"></clr-icon>
+        <clr-icon *ngIf="alertMsg.type === 'alert-warning'" shape="warning-standard"></clr-icon>
+      </div>
+      <div class="alert-text">
+        {{alertMsg.message}}
+      </div>
+    </div>
+  </div>
+  <button type="button" class="close" aria-label="Close" (click)="onCloseAlert()">
+      <clr-icon aria-hidden="true" shape="close"></clr-icon>
+    </button>
+</div>

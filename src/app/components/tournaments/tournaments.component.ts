@@ -10,6 +10,8 @@ import { getDateFromString } from '../../utils/getDate';
 import { ITourney } from '../../models/tourney';
 import { ITourneyType } from '../../models/tourneyType';
 import { IUserInfo } from '../../models/user';
+import { AlertService, AlertMsg } from '../../services/alert.service';
+import { CREATED, ERROR, UPDATED, DELETED } from './messages';
 
 const CurrentTournaments = gql`
   query CurrentTournaments{
@@ -125,6 +127,7 @@ export class TournamentsComponent implements OnInit {
   constructor(
     private apollo: Apollo,
     private router: Router,
+    private alertService: AlertService,
   ) {
   }
 
@@ -218,9 +221,10 @@ export class TournamentsComponent implements OnInit {
             }
           }
         }).subscribe(x => {
-          this.onOperationComplete()
+          this.onOperationComplete();
+          this.alertService.show(CREATED);
         }, err => {
-          console.log(err);
+          this.alertService.show(ERROR);
         });
       } else {
         this.apollo.mutate({
@@ -235,9 +239,10 @@ export class TournamentsComponent implements OnInit {
             }
           }
         }).subscribe(x => {
-          this.onOperationComplete()
+          this.onOperationComplete();
+          this.alertService.show(UPDATED);
         }, err => {
-          console.log(err);
+          this.alertService.show(ERROR);
         });
       }
     }
@@ -251,8 +256,9 @@ export class TournamentsComponent implements OnInit {
       }
     }).subscribe(x => {
       this.onOperationComplete();
+      this.alertService.show(DELETED);
     }, err => {
-      console.log(err);
+      this.alertService.show(ERROR);
     });
   }
 
