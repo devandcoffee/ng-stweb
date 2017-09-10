@@ -2,7 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+
 import { IUserInfo } from '../../models/user';
+import { AlertService } from '../../services/alert.service';
+import { LOGIN_FAILED, LOGGED_IN } from './messages';
+
+const Login = gql`
+mutation Login($authData: AuthData) {
+  signIn(authData: $authData) {
+    token
+  }
+}
+`;
 
 @Component({
   moduleId: module.id,
@@ -16,7 +29,11 @@ export class LoginComponent implements OnInit {
   credentials: any;
   badCredentials: boolean;
 
-  constructor(private router: Router) {
+  constructor(
+    private apollo: Apollo,
+    private router: Router,
+    private alertService: AlertService,
+  ) {
   }
 
   ngOnInit(): void {
@@ -29,10 +46,25 @@ export class LoginComponent implements OnInit {
   login(): void {
     if (this.loginForm.dirty && this.loginForm.valid) {
       this.credentials = this.loginForm.value;
-      // this.usersService.login(this.credentials).subscribe(
-      //   (userInfo: IUserInfo) => this.processUserInfo(userInfo),
-      //   err => this.processError(err)
-      // );
+      this.apollo.mutate({
+        mutation: Login,
+        variables: {
+          'authData': {
+            email: this.credentials.email,
+            password: this.credentials.password
+          }
+        }
+      }).subscribe(token => {
+        if ('signIn' in token.data && token.data['signIn']) {
+          this.alertService.show(LOGGED_IN);
+          localStorage.setItem('token', token.data['signIn']['token']);
+          this.router.navigate(['/tournaments']);
+        } else {
+          this.alertService.show(LOGIN_FAILED);
+        }
+      }, err => {
+        this.alertService.show(LOGIN_FAILED);
+      });
     }
   }
 
