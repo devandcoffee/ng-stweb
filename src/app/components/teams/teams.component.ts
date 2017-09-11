@@ -7,6 +7,7 @@ import { IStatus } from '../../models/status';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { getDateFromString } from '../../utils/getDate';
+import { AlertService, ALERT_TYPES } from '../../services/alert.service';
 
 @Component({
   selector: 'app-teams',
@@ -29,7 +30,7 @@ export class TeamsComponent implements OnInit {
 
   constructor(
     private router: Router,
-
+    private alertService: AlertService,
   ) {
   }
 
